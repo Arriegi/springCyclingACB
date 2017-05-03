@@ -62,6 +62,10 @@ public class Cyclist {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
+	public String getFullName() {
+		return this.firstName + " " + this.lastName;
+	}
 
 	public Country getCountry() {
 		return country;
@@ -79,8 +83,18 @@ public class Cyclist {
 		this.birthdate = birthdate;
 	}
 	
+	public void addTeam(Integer year, Team team) {
+		this.teams.put(year, team);
+	}
+	
 	public Map<Integer, Team> getTeams() {
 		return teams;
+	}
+	
+	public Map<Integer, String> getStringTeams() {
+		Map<Integer,String> names = new TreeMap<Integer,String>();
+		this.teams.forEach((key,value) -> names.put(key, value.getTeamNameByYear(key)));
+		return names;
 	}
 
 	public void setTeams(Map<Integer, Team> teams) {

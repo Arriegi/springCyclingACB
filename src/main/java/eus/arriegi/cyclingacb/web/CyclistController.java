@@ -23,21 +23,28 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import eus.arriegi.cyclingacb.domain.Country;
 import eus.arriegi.cyclingacb.domain.Cyclist;
+import eus.arriegi.cyclingacb.domain.CyclistTeam;
+import eus.arriegi.cyclingacb.domain.Team;
 import eus.arriegi.cyclingacb.service.CyclistManager;
+import eus.arriegi.cyclingacb.service.TeamManager;
 import eus.arriegi.cyclingacb.web.validator.CyclistFormValidator;
 
 @Controller
+@SessionAttributes({"cyclistId"})
 public class CyclistController extends BaseController {
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	@Autowired
 	private CyclistManager cyclistManager;
+	@Autowired
+	private TeamManager teamManager;
 
 	@Autowired
 	private CyclistFormValidator cyclistFormValidator;
@@ -65,6 +72,18 @@ public class CyclistController extends BaseController {
 			}
 		});
 	}
+	
+	@InitBinder("cyclistTeam")
+	protected void initBinderCyclistTeam(WebDataBinder binder) {
+		//binder.setValidator(cyclistFormValidator);
+		binder.registerCustomEditor(Team.class, "team", new PropertyEditorSupport() {
+			@Override
+			public void setAsText(String text) {
+				Team team = teamManager.getTeam(Long.parseLong(text));
+				setValue(team);
+			}
+		});
+	}
 
 	@RequestMapping(value = "/cyclists.html")
 	public ModelAndView cyclists(HttpSession session, HttpServletRequest request) throws ServletException, IOException {
@@ -79,8 +98,9 @@ public class CyclistController extends BaseController {
 	}
 
 	@RequestMapping(value = "/editCyclist.html", method = RequestMethod.GET)
-	public ModelAndView editCyclist(@RequestParam("id") Long id) throws ServletException, IOException {
+	public ModelAndView editCyclist(HttpSession session, @RequestParam("id") Long id) throws ServletException, IOException {
 		if (id != null && id > 0) {
+			session.setAttribute("cyclistId", id);
 			ModelAndView model = new ModelAndView("newCyclist", "cyclist", cyclistManager.getCyclist(id));
 			model.addObject("countries",cyclistManager.getCountries());
 			return model;
@@ -115,4 +135,22 @@ public class CyclistController extends BaseController {
 	}
 
 
+	// ================= CYCLIST TEAM ======================= //
+	
+	@RequestMapping(value = "/newCyclistTeam.html", method = RequestMethod.GET)
+	public ModelAndView newTeamName(HttpSession session) throws ServletException, IOException {
+		Cyclist cyclist = cyclistManager.getCyclist((Long)session.getAttribute("cyclistId"));
+		ModelAndView model = new ModelAndView("newCyclistTeam", "cyclistTeam", new CyclistTeam());
+		model.addObject("teams",teamManager.getTeams());
+		model.addObject("cyclist",cyclist);
+		return model;
+	}
+	
+	@RequestMapping(value = "/newCyclistTeam.html", method = RequestMethod.POST)
+	public ModelAndView newTeamName(HttpSession session, @ModelAttribute("cyclistTeam") CyclistTeam cyclistTeam, BindingResult result) throws ServletException, IOException {
+		Cyclist cyclist = cyclistManager.getCyclist((Long)session.getAttribute("cyclistId"));
+		cyclist.addTeam(cyclistTeam.getYear(), cyclistTeam.getTeam());
+		cyclistManager.updateCyclist(cyclist);
+		return new ModelAndView("redirect:editCyclist.html?id=" + cyclist.getId());
+	}
 }

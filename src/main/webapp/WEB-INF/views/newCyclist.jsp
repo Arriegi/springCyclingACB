@@ -72,6 +72,28 @@
 						</div>
 					</spring:bind>
 					<!-- bind to user.name-->
+					<table class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Año</th>
+							<th>Equipo</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:forEach items="${cyclist.stringTeams}" var="obj" varStatus="status">
+							<tr>
+								<td>${obj.key}</td>
+								<td>${obj.value}</td>
+							</tr>
+						</c:forEach>
+						<sec:authorize access="hasAuthority('ADMIN')">
+							<tr>
+								<td colspan="2"><a class="btn btn-default"
+									href="newCyclistTeam.html">Nuevo equipo</a></td>
+							</tr>
+						</sec:authorize>
+					</tbody>
+				</table>
 					<button class="btn btn-default col-md-4 col-md-offset-3">Gorde</button>
 				</form:form>
 			</div>

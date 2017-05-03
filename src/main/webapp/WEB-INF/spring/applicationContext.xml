@@ -39,7 +39,7 @@
 		<property name="persistenceUnitName" value="cyclingacbPU"></property>
 		<property name="jpaProperties">
 			<props>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
 				<prop key="hibernate.enable_lazy_load_no_trans">true</prop>
 				<prop key="hibernate.connection.handling_mode">DELAYED_ACQUISITION_AND_HOLD</prop>
 			</props>

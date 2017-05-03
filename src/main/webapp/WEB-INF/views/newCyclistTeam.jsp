@@ -18,45 +18,35 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-lg-12 col-md-12">
-						<h1>Nuevo equipo</h1>
+						<h1><c:out value="${cyclist.fullName}"></c:out></h1>
 					</div>
 				</div>
 				<form:form class="form-horizontal" method="post"
-					modelAttribute="team" action="newTeam.html">
-					<form:hidden path="id" />
-					<spring:bind path="basicName">
+					modelAttribute="cyclistTeam" action="newCyclistTeam.html">
+					<spring:bind path="year">
 						<div class="form-group ${status.error ? 'has-error' : ''}">
-							<label class="col-sm-2 control-label">Nombre</label>
+							<label class="col-sm-2 control-label">Año</label>
 							<div class="col-sm-10">
-								<form:input path="basicName" type="text" class="form-control "
-									id="basicName" placeholder="Nombre" />
-								<form:errors path="basicName" class="control-label" />
+								<form:input path="year" type="number" class="form-control "
+									id="year" placeholder="Año" />
+								<form:errors path="year" class="control-label" />
 							</div>
 						</div>
 					</spring:bind>
-					<form:errors path="basicName" />
-					<table class="table table-striped table-bordered">
-						<thead>
-							<tr>
-								<th>Año</th>
-								<th>Nombre</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach items="${team.names}" var="obj" varStatus="status">
-								<tr>
-									<td>${obj.key}</td>
-									<td>${obj.value}</td>
-								</tr>
-							</c:forEach>
-							<sec:authorize access="hasAuthority('ADMIN')">
-								<tr>
-									<td colspan="2"><a class="btn btn-default"
-										href="newTeamName.html">Nuevo nombre</a></td>
-								</tr>
-							</sec:authorize>
-						</tbody>
-					</table>
+					<form:errors path="year" />
+					<spring:bind path="team">
+						<div class="form-group ${status.error ? 'has-error' : ''}">
+							<label class="col-sm-2 control-label">Equipos</label>
+							<div class="col-sm-5">
+								<form:select path="team" class="form-control">
+									<form:options items="${teams}" itemValue="id"
+										itemLabel="teamName" />
+								</form:select>
+								<form:errors path="team" class="control-label" />
+							</div>
+							<div class="col-sm-5"></div>
+						</div>
+					</spring:bind>
 					<button class="btn btn-default col-md-4 col-md-offset-3">Gorde</button>
 				</form:form>
 			</div>

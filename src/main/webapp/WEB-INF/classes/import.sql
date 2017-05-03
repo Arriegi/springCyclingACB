@@ -254,3 +254,5 @@ INSERT INTO Country (id, code, name) VALUES  (238, 'ZMB', 'Zambia');
 INSERT INTO Country (id, code, name) VALUES  (239, 'ZWE', 'Zimbabwe');
 
 INSERT INTO Team (id, basicName) VALUES (1,'Abarca Sports');
+INSERT INTO Cyclist(id, birthdate,firstName,lastName,countryId) VALUES (1,'1980-04-25','Alejandro','Valverde',199);
+INSERT INTO Cyclist(id, birthdate,firstName,lastName,countryId) VALUES (1,'1980-02-04','Nairo','Quintana',47);

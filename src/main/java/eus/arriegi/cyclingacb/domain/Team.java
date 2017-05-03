@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OrderBy;
 
 @Entity
 public class Team {
@@ -24,7 +23,6 @@ public class Team {
 	private Long id;
 	private String basicName;
 	@ElementCollection(targetClass = String.class)
-	@OrderBy(value = "")
 	private Map<Integer,String> names;
 	
 	public Long getId() {
