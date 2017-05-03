@@ -1,13 +1,8 @@
 package eus.arriegi.cyclingacb.web;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,11 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import eus.arriegi.cyclingacb.domain.Section;
 import eus.arriegi.cyclingacb.service.SectionManager;
-import eus.arriegi.cyclingacb.utils.reports.ColumnData;
-import eus.arriegi.cyclingacb.utils.reports.ReportUtils;
 import eus.arriegi.cyclingacb.web.validator.SectionFormValidator;
-import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.dynamicreports.report.exception.DRException;
 
 @Controller
 public class SectionController extends BaseController {
@@ -92,27 +83,4 @@ public class SectionController extends BaseController {
 		}
 	}
 	
-	// =================== REPORTS =====================//
-	@RequestMapping(value = "/sectionsReport.pdf", method = RequestMethod.GET)
-	public void getClientsPdf(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-		response.setContentType("application/pdf");
-		OutputStream out = response.getOutputStream();
-		try {
-			JasperReportBuilder jrb = createJasperReport();
-			jrb.toPdf(out);
-		} catch (DRException e) {
-			throw new ServletException(e);
-		}
-		out.close();
-	}
-
-	@Override
-	protected JasperReportBuilder createJasperReport() {
-		ReportUtils<Section> reportUtils = new ReportUtils<>("Secciones", null, sectionManager.getSections());
-		List<ColumnData> columns = new ArrayList<ColumnData>();
-		ColumnData colData = new ColumnData("Sección", "name", "string");
-		columns.add(colData);
-		return reportUtils.getBuilder(columns);
-	}
 }

@@ -1,3 +1,3 @@
 <sec:authorize access="hasAuthority('ADMIN')">
-	<th>Aukerak</th>
+	<th>Opciones</th>
 </sec:authorize>

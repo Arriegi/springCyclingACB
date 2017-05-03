@@ -12,8 +12,8 @@
 	</appender>
 
 	<!-- Application logger -->
-	<logger name="parteak">
-		<level value="warn" />
+	<logger name="cycling-acb">
+		<level value="debug" />
 	</logger>
 
 	<!-- 3rdparty Loggers -->
@@ -43,7 +43,7 @@
 	
 	<!-- Root Logger -->
 	<root>
-		<priority value="warn" />
+		<priority value="debug" />
 		<appender-ref ref="console" />
 	</root>
 	

@@ -9,36 +9,33 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import eus.arriegi.cyclingacb.domain.Worker;
-import eus.arriegi.cyclingacb.service.WorkerManager;
-import eus.arriegi.cyclingacb.web.validator.WorkerFormValidator;
-import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import eus.arriegi.cyclingacb.domain.Player;
+import eus.arriegi.cyclingacb.service.PlayerManager;
+import eus.arriegi.cyclingacb.web.validator.PlayerFormValidator;
 
 @Controller
-@SessionAttributes({ "loggedWorker" })
+@SessionAttributes({ "loggedPlayer" })
 public abstract class BaseController {
 
 	@Autowired
-	protected WorkerManager workerManager;
+	protected PlayerManager playerManager;
 	@Autowired
-	protected WorkerFormValidator workerFormValidator;
+	protected PlayerFormValidator playerFormValidator;
 	
-	@InitBinder("loggedWorker")
+	@InitBinder("loggedPlayer")
 	protected void initWorkerBinder(WebDataBinder binder) {
-		binder.setValidator(workerFormValidator);
+		binder.setValidator(playerFormValidator);
 	}
 	
-	@ModelAttribute("loggedWorker")
-	public Worker getLoggedWorker() {
+	@ModelAttribute("loggedPlayer")
+	public Player getLoggedPlayer() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth.isAuthenticated()) {
-			Worker worker = workerManager.getWorker(auth.getName());
-			return worker;
+			Player player = playerManager.getPlayer(auth.getName());
+			return player;
 		} else {
 			return null;
 		}
 	}
-	
-	protected abstract JasperReportBuilder createJasperReport();
 	
 }

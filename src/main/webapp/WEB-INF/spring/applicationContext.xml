@@ -36,7 +36,7 @@
 			<bean
 				class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
 		</property>
-		<property name="persistenceUnitName" value="parteakPU"></property>
+		<property name="persistenceUnitName" value="cyclingacbPU"></property>
 		<property name="jpaProperties">
 			<props>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
@@ -92,8 +92,8 @@
 			<sec:password-encoder hash="bcrypt" />
 			<sec:jdbc-user-service data-source-ref="dataSource"
 				role-prefix=""
-				users-by-username-query="select email as username,password,true from Worker where email=?"
-				authorities-by-username-query="select u1.email as username, u2.name from Worker u1 left join Role u2 on u1.roleId = u2.id where u1.email=?" />
+				users-by-username-query="select username,password,enabled from Player where username=?"
+				authorities-by-username-query="select u1.username, u3.name from Player u1 left join Player_Role u2 on u2.playerId = u1.id left join Role u3 on u2.roleId = u3.id where u1.username = ?" />
 		</sec:authentication-provider>
 	</sec:authentication-manager>
 

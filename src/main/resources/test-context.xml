@@ -27,7 +27,7 @@
 			<bean
 				class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
 		</property>
-		<property name="persistenceUnitName" value="parteakPU"></property>
+		<property name="persistenceUnitName" value="cyclingacbPU"></property>
 	</bean>
 
 	<bean id="jpaAdapter"

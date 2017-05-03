@@ -2,16 +2,12 @@ package eus.arriegi.cyclingacb.web;
 
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
@@ -42,12 +38,8 @@ import eus.arriegi.cyclingacb.service.OperationManager;
 import eus.arriegi.cyclingacb.service.PartManager;
 import eus.arriegi.cyclingacb.service.WorkOperationManager;
 import eus.arriegi.cyclingacb.service.WorkerManager;
-import eus.arriegi.cyclingacb.utils.reports.ColumnData;
-import eus.arriegi.cyclingacb.utils.reports.ReportUtils;
 import eus.arriegi.cyclingacb.web.validator.PartFormValidator;
 import eus.arriegi.cyclingacb.web.validator.WorkOperationFormValidator;
-import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.dynamicreports.report.exception.DRException;
 
 @Controller
 @SessionAttributes("partId")
@@ -102,12 +94,7 @@ public class PartController extends BaseController {
 	
 	@RequestMapping(value = "/newPart.html", method = RequestMethod.GET)
 	public ModelAndView newPart(Model model)	throws ServletException, IOException {
-		Part part = new Part();
-		part.setDate(new Date());
-		part.setWorker(getLoggedWorker());
-		ModelAndView mAndV = new ModelAndView("newPart","part",part);
-		mAndV.addObject("workers",workerManager.getWorkers());
-		return mAndV;
+		return null;
 	}
 	
 	@RequestMapping(value = "/newPart.html", method = RequestMethod.POST)
@@ -241,29 +228,4 @@ public class PartController extends BaseController {
 		}
 	}
 	
-	// =================== REPORTS =====================//
-	@RequestMapping(value = "/partsReport.html", method = RequestMethod.GET)
-	public void getClientsPdf(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-		response.setContentType("application/pdf");
-		OutputStream out = response.getOutputStream();
-		try {
-			JasperReportBuilder jrb = createJasperReport();
-			jrb.toPdf(out);
-		} catch (DRException e) {
-			throw new ServletException(e);
-		}
-		out.close();
-	}
-
-	@Override
-	protected JasperReportBuilder createJasperReport() {
-		ReportUtils<Worker> reportUtils = new ReportUtils<>("Trabajadores", null, workerManager.getWorkers());
-		List<ColumnData> columns = new ArrayList<ColumnData>();
-		ColumnData colData = new ColumnData("Trabajador", "fullName", "string");
-		columns.add(colData);
-		colData = new ColumnData("Sección", "section.name", "string");
-		columns.add(colData);
-		return reportUtils.getBuilder(columns);
-	}
 }

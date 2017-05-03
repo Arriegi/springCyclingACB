@@ -69,14 +69,3 @@
 	</div>
 </body>
 </html>
-
-<!-- 
-<html><head><title>Login Page</title></head><body onload='document.f.username.focus();'>
-<h3>Login with Email and Password</h3><form name='f' action='/parteak/login.html' method='POST'>
-<table>
-	<tr><td>Email:</td><td><input type='email' name='email'></td></tr>
-	<tr><td>Password:</td><td><input type='password' name='password'/></td></tr>
-	<tr><td colspan='2'><input name="submit" type="submit" value="Login"/></td></tr>
-	<input name="_csrf" type="hidden" value="431b93d5-9fca-4e4e-ac7a-ca32c8ab3d9a" />
-</table>
-</form></body></html> -->

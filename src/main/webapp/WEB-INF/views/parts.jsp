@@ -18,7 +18,7 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-lg-12 col-md-12">
-						<h1>Parteak</h1>
+						<h1>GT Foro ACB</h1>
 					</div>
 				</div>
 				<table class="table table-striped table-bordered">

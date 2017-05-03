@@ -2,13 +2,9 @@ package eus.arriegi.cyclingacb.web;
 
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,11 +25,7 @@ import eus.arriegi.cyclingacb.domain.Operation;
 import eus.arriegi.cyclingacb.domain.OperationType;
 import eus.arriegi.cyclingacb.service.OperationManager;
 import eus.arriegi.cyclingacb.service.OperationTypeManager;
-import eus.arriegi.cyclingacb.utils.reports.ColumnData;
-import eus.arriegi.cyclingacb.utils.reports.ReportUtils;
 import eus.arriegi.cyclingacb.web.validator.OperationFormValidator;
-import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.dynamicreports.report.exception.DRException;
 
 @Controller
 public class OperationController extends BaseController {
@@ -109,28 +101,5 @@ public class OperationController extends BaseController {
 			return new ModelAndView("redirect:operations.html");
 		}
 	}
-
-	// =================== REPORTS =====================//
-	@RequestMapping(value = "/operationsReport.pdf", method = RequestMethod.GET)
-	public void getClientsPdf(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-		response.setContentType("application/pdf");
-		OutputStream out = response.getOutputStream();
-		try {
-			JasperReportBuilder jrb = createJasperReport();
-			jrb.toPdf(out);
-		} catch (DRException e) {
-			throw new ServletException(e);
-		}
-		out.close();
-	}
-
-	@Override
-	protected JasperReportBuilder createJasperReport() {
-		ReportUtils<Operation> reportUtils = new ReportUtils<>("Operaciones", null, operationManager.getOperations());
-		ColumnData colData = new ColumnData("Operación", "name", "string");
-		List<ColumnData> columns = new ArrayList<ColumnData>();
-		columns.add(colData);
-		return reportUtils.getBuilder(columns);
-	}
+	
 }

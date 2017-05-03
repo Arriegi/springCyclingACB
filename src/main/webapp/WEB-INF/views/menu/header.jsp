@@ -6,7 +6,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>Elkarmedia parteak</title>
+<title>Ciclismo Foro ACB</title>
 
 <%@ include file="/WEB-INF/views/menu/bootstrap.jsp"%>
 

@@ -2,16 +2,12 @@ package eus.arriegi.cyclingacb.web;
 
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,11 +31,7 @@ import eus.arriegi.cyclingacb.service.ClientManager;
 import eus.arriegi.cyclingacb.service.FabricationMaterialManager;
 import eus.arriegi.cyclingacb.service.FabricationOrderManager;
 import eus.arriegi.cyclingacb.service.MaterialManager;
-import eus.arriegi.cyclingacb.utils.reports.ColumnData;
-import eus.arriegi.cyclingacb.utils.reports.ReportUtils;
 import eus.arriegi.cyclingacb.web.validator.FabricationOrderFormValidator;
-import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.dynamicreports.report.exception.DRException;
 
 @Controller
 public class FabricationOrderController extends BaseController {
@@ -234,33 +226,6 @@ public class FabricationOrderController extends BaseController {
 		} else {
 			return new ModelAndView("redirect:newFabricationMaterial.html");
 		}
-	}
-	
-	// =============== REPORT ====================== //
-	
-	@RequestMapping(value = "ordersReport.pdf", method = RequestMethod.GET)
-	public void getClientsPdf(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-		response.setContentType("application/pdf");
-		OutputStream out = response.getOutputStream();
-		try {
-			JasperReportBuilder jrb = createJasperReport();
-			jrb.toPdf(out);
-		} catch (DRException e) {
-			throw new ServletException(e);
-		}
-		out.close();
-	}
-
-	@Override
-	protected JasperReportBuilder createJasperReport() {
-		ReportUtils<FabricationOrder> reportUtils = new ReportUtils<>("Ordenes de Fabricación", null,fabricationOrderManager.getFabricationOrders());
-		List<ColumnData> columns = new ArrayList<ColumnData>();
-		ColumnData colData = new ColumnData("Nombre","name","string");
-		columns.add(colData);
-		colData = new ColumnData("Cliente", "client.name","string");
-		columns.add(colData);
-		return reportUtils.getBuilder(columns);
 	}
 
 }

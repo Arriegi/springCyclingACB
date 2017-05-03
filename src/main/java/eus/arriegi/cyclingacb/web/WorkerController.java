@@ -2,13 +2,9 @@ package eus.arriegi.cyclingacb.web;
 
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import eus.arriegi.cyclingacb.domain.Player;
 import eus.arriegi.cyclingacb.domain.Section;
 import eus.arriegi.cyclingacb.domain.Worker;
 import eus.arriegi.cyclingacb.domain.authentication.Profile;
@@ -35,11 +32,7 @@ import eus.arriegi.cyclingacb.domain.authentication.Role;
 import eus.arriegi.cyclingacb.service.RoleManager;
 import eus.arriegi.cyclingacb.service.SectionManager;
 import eus.arriegi.cyclingacb.service.WorkerManager;
-import eus.arriegi.cyclingacb.utils.reports.ColumnData;
-import eus.arriegi.cyclingacb.utils.reports.ReportUtils;
 import eus.arriegi.cyclingacb.web.validator.WorkerFormValidator;
-import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
-import net.sf.dynamicreports.report.exception.DRException;
 
 @Controller
 public class WorkerController extends BaseController {
@@ -136,7 +129,7 @@ public class WorkerController extends BaseController {
 
 	@RequestMapping(value = "/profile.html", method = RequestMethod.GET)
 	public ModelAndView seeProfile() throws ServletException, IOException {
-		return new ModelAndView("seeProfile", "profile", new Profile(getLoggedWorker()));
+		return new ModelAndView("seeProfile", "profile", new Profile(getLoggedPlayer()));
 	}
 
 	@RequestMapping(value = "/editProfile.html", method = RequestMethod.POST)
@@ -145,42 +138,17 @@ public class WorkerController extends BaseController {
 		if (result.hasErrors()) {
 			return new ModelAndView("newWorker", "profile", profile);
 		} else {
-			Worker worker = getLoggedWorker();
-			worker.setEmail(profile.getEmail());
-			worker.setPassword(passwordEncoder.encode(profile.getPassword()));
-			workerManager.updateWorker(worker);
-			if (!worker.getEmail().equals(profile.getEmail())) {
+			Player player = getLoggedPlayer();
+			player.setEmail(profile.getEmail());
+			player.setPassword(passwordEncoder.encode(profile.getPassword()));
+			playerManager.updatePlayer(player);
+			if (!player.getEmail().equals(profile.getEmail())) {
 				new SecurityContextLogoutHandler().logout(request, null, null);
 				return new ModelAndView("redirect:login");
 			} else {
-				return new ModelAndView("seeProfile", "profile", worker);
+				return new ModelAndView("seeProfile", "profile", player);
 			}
 		}
 	}
 
-	// =================== REPORTS =====================//
-	@RequestMapping(value = "/workersReport.pdf", method = RequestMethod.GET)
-	public void getClientsPdf(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-		response.setContentType("application/pdf");
-		OutputStream out = response.getOutputStream();
-		try {
-			JasperReportBuilder jrb = createJasperReport();
-			jrb.toPdf(out);
-		} catch (DRException e) {
-			throw new ServletException(e);
-		}
-		out.close();
-	}
-
-	@Override
-	protected JasperReportBuilder createJasperReport() {
-		ReportUtils<Worker> reportUtils = new ReportUtils<>("Trabajadores", null, workerManager.getWorkers());
-		List<ColumnData> columns = new ArrayList<ColumnData>();
-		ColumnData colData = new ColumnData("Trabajador", "fullName", "string");
-		columns.add(colData);
-		colData = new ColumnData("Sección", "section.name", "string");
-		columns.add(colData);
-		return reportUtils.getBuilder(columns);
-	}
 }

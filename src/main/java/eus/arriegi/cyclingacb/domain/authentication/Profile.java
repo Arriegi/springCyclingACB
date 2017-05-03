@@ -1,18 +1,18 @@
 package eus.arriegi.cyclingacb.domain.authentication;
 
-import eus.arriegi.cyclingacb.domain.Worker;
+import eus.arriegi.cyclingacb.domain.Player;
 
 public class Profile {
 	
 	public Profile(){}
 	
-	public Profile(Worker worker) {
-		this.email = worker.getEmail();
-		this.password = worker.getPassword();
-		this.fullName = worker.getFullName();
+	public Profile(Player player) {
+		this.email = player.getEmail();
+		this.password = player.getPassword();
+		this.username = player.getUsername();
 	}
 
-	private String email, password, fullName;
+	private String email, password, username;
 
 	public String getEmail() {
 		return email;
@@ -30,12 +30,12 @@ public class Profile {
 		this.password = password;
 	}
 	
-	public String getFullName() {
-		return fullName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class Profile {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result + ((fullName == null) ? 0 : fullName.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		return result;
 	}
@@ -74,11 +74,11 @@ public class Profile {
 		} else if (!password.equals(other.password)) {
 			return false;
 		}
-		if (fullName == null) {
-			if (other.fullName != null) {
+		if (username == null) {
+			if (other.username != null) {
 				return false;
 			}
-		} else if (!fullName.equals(other.fullName)) {
+		} else if (!username.equals(other.username)) {
 			return false;
 		}
 		return true;
@@ -86,7 +86,7 @@ public class Profile {
 
 	@Override
 	public String toString() {
-		return "Profile [email=" + email + ", password=" + password + ", fullName=" + fullName + "]";
+		return "Profile [email=" + email + ", password=" + password + ", username=" + username + "]";
 	}
 
 }

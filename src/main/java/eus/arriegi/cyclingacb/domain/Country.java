@@ -1,26 +1,18 @@
-package eus.arriegi.cyclingacb.domain.authentication;
+package eus.arriegi.cyclingacb.domain;
 
-import java.util.List;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-
-import eus.arriegi.cyclingacb.domain.Player;
 
 @Entity
-public class Role {
-	
+public class Country {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(unique = true)
 	private String name;
-	@ManyToMany(mappedBy = "roles")
-	private List<Player> players;
+	private String code;
 	
 	public Long getId() {
 		return id;
@@ -34,24 +26,25 @@ public class Role {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public List<Player> getPlayers() {
-		return players;
+	public String getCode() {
+		return code;
 	}
-	public void setPlayers(List<Player> players) {
-		this.players = players;
+	public void setCode(String code) {
+		this.code = code;
 	}
-	
+	@Override
+	public String toString() {
+		return "Country [id=" + id + ", name=" + name + ", code=" + code + "]";
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((code == null) ? 0 : code.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((players == null) ? 0 : players.hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -60,7 +53,12 @@ public class Role {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Role other = (Role) obj;
+		Country other = (Country) obj;
+		if (code == null) {
+			if (other.code != null)
+				return false;
+		} else if (!code.equals(other.code))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -71,17 +69,7 @@ public class Role {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (players == null) {
-			if (other.players != null)
-				return false;
-		} else if (!players.equals(other.players))
-			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Role [id=" + id + ", name=" + name + ", players=" + players + "]";
 	}
 	
 }
