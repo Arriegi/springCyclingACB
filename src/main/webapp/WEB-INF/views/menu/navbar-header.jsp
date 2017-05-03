@@ -6,5 +6,5 @@
 		<span class="icon-bar"></span> <span class="icon-bar"></span>
 	</button>
 	<c:url value="/" var="root" />
-	<a class="navbar-brand" href="${root}">Elkarmedia Parteak</a>
+	<a class="navbar-brand" href="${root}">Ciclismo Foro ACB</a>
 </div>

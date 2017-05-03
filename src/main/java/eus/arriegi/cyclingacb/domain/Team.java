@@ -1,21 +1,30 @@
 package eus.arriegi.cyclingacb.domain;
 
+import java.time.Year;
+import java.util.Collections;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OrderBy;
 
 @Entity
 public class Team {
+	
+	public Team() {
+		this.names = new TreeMap<Integer,String>(Collections.reverseOrder());
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String basicName;
 	@ElementCollection(targetClass = String.class)
+	@OrderBy(value = "")
 	private Map<Integer,String> names;
 	
 	public Long getId() {
@@ -30,11 +39,31 @@ public class Team {
 	public void setBasicName(String basicName) {
 		this.basicName = basicName;
 	}
+	public String getTeamName() {
+		Integer year = Year.now().getValue();
+		if (this.names != null && this.names.size() > 0 && this.names.containsKey(year)) {
+			return this.names.get(year);
+		} else {
+			return "";
+		}
+	}
+	public String getTeamNameByYear(Integer year) {
+		if (this.names != null && this.names.size() > 0 && this.names.containsKey(year)) {
+			return this.names.get(year);
+		} else {
+			return "";
+		}
+	}
 	public Map<Integer, String> getNames() {
-		return names;
+		TreeMap<Integer,String> ordered = new TreeMap<Integer,String>(Collections.reverseOrder());
+		this.names.forEach((key,value) -> ordered.put(key, value));
+		return ordered;
 	}
 	public void setNames(Map<Integer, String> names) {
 		this.names = names;
+	}
+	public void addName(Integer year, String name) {
+		this.names.put(year, name);
 	}
 	@Override
 	public int hashCode() {

@@ -252,3 +252,5 @@ INSERT INTO Country (id, code, name) VALUES  (236, 'ESH', 'Western Sahara');
 INSERT INTO Country (id, code, name) VALUES  (237, 'YEM', 'Yemen');
 INSERT INTO Country (id, code, name) VALUES  (238, 'ZMB', 'Zambia');
 INSERT INTO Country (id, code, name) VALUES  (239, 'ZWE', 'Zimbabwe');
+
+INSERT INTO Team (id, basicName) VALUES (1,'Abarca Sports');

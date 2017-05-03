@@ -2,8 +2,8 @@ package eus.arriegi.cyclingacb.domain;
 
 import java.time.Year;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
@@ -23,7 +23,7 @@ import javax.persistence.UniqueConstraint;
 public class Cyclist {
 	
 	public Cyclist() {
-		this.teams = new HashMap<Integer,Team>();
+		this.teams = new TreeMap<Integer,Team>();
 	}
 
 	@Id
